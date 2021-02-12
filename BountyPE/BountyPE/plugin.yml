@@ -1,8 +1,8 @@
 name: Bounty
-api: [3.0.0-ALPHA7, 3.0.0-ALPHA8, 3.0.0-ALPHA9, 3.0.0-ALPHA10]
+api: 3.0.0
 main: Infernus101\Main
-version: 2.0.0
-author: VMPE Development Team
+version: 2.0.1-PMnS
+author: VMPE Development Team, princepines
 description: Bounty plugin for Faction servers.
 commands:
   bounty:
