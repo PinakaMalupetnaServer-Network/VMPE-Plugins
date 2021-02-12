@@ -121,29 +121,31 @@ class Main extends PluginBase implements Listener{
 			$lowr = strtolower($name);
             $killer = $event->getEntity()->getLastDamageCause()->getDamager();
 			$name2 = $killer->getName();
-			if($player instanceof Player){
-				if($this->bountyExists($lowr)){
-					$money = $this->getBountyMoney($lowr);
-					$killer->sendMessage("§6[BOUNTY]>§b §bYou get extra §3$money §bfrom bounty for killing §3$name"."§b!");
-					EconomyAPI::getInstance()->addMoney($killer->getName(), $money);
-					if($this->cfg->get("bounty_broadcast") == 1){
-			          $this->getServer()->broadcastMessage("§6[BOUNTY]> §2$name2 §ajust got §2$money"."$ §abounty for killing §2$name!");
-		            }
-				if($this->cfg->get("bounty_fine") == 1){
-					$perc = $this->cfg->get("fine_percentage");
-					$fine = ($money*$perc)/100;
-					if(EconomyAPI::getInstance()->myMoney($player->getName()) > $fine){
-					  	EconomyAPI::getInstance()->reduceMoney($player->getName(), $fine);
-						$player->sendMessage("§6[BOUNTY]>§bYour §3$fine"."$ §bwas taken as Bounty fine! Bounty Fine = §3$perc §bPercent of Bounty on you!");
-					}
-					if(EconomyAPI::getInstance()->myMoney($player->getName()) <= $fine){
-					  	EconomyAPI::getInstance()->setMoney($player->getName(), 0);
-						$player->sendMessage("§6[BOUNTY]>§bYour §3$fine"."$ §bwas taken as Bounty fine! Bounty Fine = §3$perc §bPercent of Bounty on you!");
-					}
-				}
-					$this->deleteBounty($lowr);
-				}
-		 }
+			if($player instanceof Player) {
+                if ($player->getLevel()->getName() == "world") {
+                    if ($this->bountyExists($lowr)) {
+                        $money = $this->getBountyMoney($lowr);
+                        $killer->sendMessage("§6[BOUNTY]>§b §bYou get extra §3$money §bfrom bounty for killing §3$name" . "§b!");
+                        EconomyAPI::getInstance()->addMoney($killer->getName(), $money);
+                        if ($this->cfg->get("bounty_broadcast") == 1) {
+                            $this->getServer()->broadcastMessage("§6[BOUNTY]> §2$name2 §ajust got §2$money" . "$ §abounty for killing §2$name!");
+                        }
+                        if ($this->cfg->get("bounty_fine") == 1) {
+                            $perc = $this->cfg->get("fine_percentage");
+                            $fine = ($money * $perc) / 100;
+                            if (EconomyAPI::getInstance()->myMoney($player->getName()) > $fine) {
+                                EconomyAPI::getInstance()->reduceMoney($player->getName(), $fine);
+                                $player->sendMessage("§6[BOUNTY]>§bYour §3$fine" . "$ §bwas taken as Bounty fine! Bounty Fine = §3$perc §bPercent of Bounty on you!");
+                            }
+                            if (EconomyAPI::getInstance()->myMoney($player->getName()) <= $fine) {
+                                EconomyAPI::getInstance()->setMoney($player->getName(), 0);
+                                $player->sendMessage("§6[BOUNTY]>§bYour §3$fine" . "$ §bwas taken as Bounty fine! Bounty Fine = §3$perc §bPercent of Bounty on you!");
+                            }
+                        }
+                        $this->deleteBounty($lowr);
+                    }
+                }
+            }
     }
 }
 	    public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool {
